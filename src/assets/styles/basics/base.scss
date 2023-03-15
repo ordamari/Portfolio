@@ -1,0 +1,22 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    font-family: Montserrat, sans-serif;
+    color: var(--text-black);
+}
+
+h1,
+section,
+body,
+p,
+span,
+svg {
+    transition: background-color 0.5s, color 0.5s;
+}
