@@ -5,11 +5,9 @@
 
 @import "experience/experience.scss";
 
-// @import "page/page.scss";
+@import "page/page.scss";
 
-// @import "components/hero.scss";
-// @import "components/section-formatting.scss";
-// @import "components/toggle-mode.scss";
-// @import "components/loader.scss";
-// @import "components/welcome.scss";
-// @import "components/animated-letter.scss";
+@import "page/components/toggle-theme.scss";
+@import "page/components/hero.scss";
+@import "page/components/section.scss";
+@import "page/components/section-margin.scss";

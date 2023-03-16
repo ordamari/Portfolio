@@ -1,0 +1,12 @@
+{
+  "light": {
+    "--primary-color": "#edebec",
+    "--secondary-color": "#5e6285",
+    "--text-black": "#1c1c1c"
+  },
+  "dark": {
+    "--primary-color": "#8395cd",
+    "--secondary-color": "#5e6285",
+    "--text-black": "#e4e4e4"
+  }
+}

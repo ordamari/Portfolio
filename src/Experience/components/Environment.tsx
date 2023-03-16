@@ -1,28 +1,25 @@
 import { motion } from "framer-motion-3d";
 import * as THREE from "three";
 import { extend } from "@react-three/fiber";
+import { assets } from "../../assets/assets";
+import { State } from "../../store/reducers";
+import { Theme } from "../../assets/types/theme";
 extend(THREE);
 
-const themes = {
-  light: {
-    color: "#ffffff",
-    intensity: 1,
-  },
-  dark: {
-    color: "#193296",
-    intensity: 0.76,
-  },
+type PrivateProps = {
+  theme: Theme;
 };
-
-export function Environment({}) {
-  // const theme = useSelector((state: State) => state.app.theme);
-  const theme = "dark";
+export function Environment({ theme }: PrivateProps) {
   return (
     <motion.group animate={theme}>
-      <motion.ambientLight args={["#ffffff"]} variants={themes} intensity={1} />
+      <motion.ambientLight
+        args={["#ffffff"]}
+        variants={assets.lightThemes}
+        intensity={1}
+      />
       <motion.directionalLight
         args={["#ffffff", 1]}
-        variants={themes}
+        variants={assets.lightThemes}
         position={[0.6, 3.4, 1]}
         castShadow={true}
         shadow-mapSize-width={2048}
