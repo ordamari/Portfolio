@@ -4,5 +4,8 @@ export function useSmoothTransform(
   value: MotionValue<number>,
   transformer: (number: number) => number
 ) {
-  return useSpring(useTransform(value, transformer), springOptions);
+  return useSpring(
+    useTransform(value, transformer),
+    springOptions
+  ) as MotionValue<number>;
 }

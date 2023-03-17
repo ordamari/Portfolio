@@ -15,7 +15,7 @@ import { useScroll } from "framer-motion";
 
 const frustum = 3;
 function App() {
-  const roomRef = useRef<ThreeElements["primitive"]>(null);
+  const roomRef = useRef<THREE.Group>(null);
   const roomChildrenRefs = useRef<{ [key: string]: any }>({});
   const mouseX = useMotionValue(0);
   const [ref, bounds] = useMeasure({ scroll: false });
@@ -71,14 +71,14 @@ function App() {
             />
           </MotionCanvas>
         </MotionConfig>
-        <Page
-          firstMoveRef={firstMoveRef}
-          secondMoveRef={secondMoveRef}
-          thirdMoveRef={thirdMoveRef}
-          theme={theme}
-          toggleTheme={toggleTheme}
-        />
       </div>
+      <Page
+        firstMoveRef={firstMoveRef}
+        secondMoveRef={secondMoveRef}
+        thirdMoveRef={thirdMoveRef}
+        theme={theme}
+        toggleTheme={toggleTheme}
+      />
     </div>
   );
 }
