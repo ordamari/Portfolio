@@ -1,5 +1,5 @@
 import { useThree } from "@react-three/fiber";
-import { MotionValue, useTransform } from "framer-motion";
+import { MotionValue, useTransform, useMotionValue } from "framer-motion";
 import { useCallback, useEffect, useMemo } from "react";
 import { assets } from "../assets/assets";
 import { useMotionsValues } from "./useMotionsValues";
@@ -20,7 +20,7 @@ export function useRoomScrollAnimation(
     },
     [rect]
   );
-
+  const motionValue = useMotionValue(0);
   const width = useMemo(() => {
     if (!rect) return 1;
     return rect.width;
@@ -62,9 +62,38 @@ export function useRoomScrollAnimation(
     return scale + path * coefficient;
   });
 
+  const mobileFirstMoveRoomScale = useTransform(firstMoveProgress, (v) => {
+    const coefficient = 1 - v;
+    const path = assets.mobileFirstMoveScale - assets.roomMobileScale;
+    return assets.roomMobileScale + path * coefficient;
+  });
+
+  const mobileSecondMoveRoomScale = useTransform(secondMoveProgress, (v) => {
+    const coefficient = 1 - v;
+    const path = assets.mobileSecondMoveScale - assets.mobileFirstMoveScale;
+    return assets.mobileFirstMoveScale + path * coefficient;
+  });
+
+  const mobileRoomScale = useMotionsValues(
+    [mobileFirstMoveRoomScale, mobileSecondMoveRoomScale],
+    assets.roomMobileScale
+  );
+
+  const mobilePositionX = useTransform(secondMoveProgress, (v) => {
+    const coefficient = 1 - v;
+    const path = assets.mobileSecondMoveX;
+    return path * coefficient;
+  });
+
+  const mobilePositionZ = useTransform(thirdMoveProgress, (v) => {
+    const coefficient = 1 - v;
+    const path = assets.mobileThirdMoveZ;
+    return path * coefficient;
+  });
+
   useEffect(() => {
     function updateCamera(v: number) {
-      if (!camera) return;
+      if (!camera || width < 960) return;
       const coefficient = 1 - v;
       const [baseX, baseY, baseZ] = assets.baseCameraPosition;
       const [targetX, targetY, targetZ] = assets.thirdPartCameraPosition;
@@ -81,9 +110,11 @@ export function useRoomScrollAnimation(
   }, []);
 
   return {
-    scale: roomScale,
-    positionX,
-    positionZ,
+    scale: width > 960 ? roomScale : mobileRoomScale,
     rotationY,
+    position:
+      width > 960
+        ? [positionX, motionValue, positionZ]
+        : [mobilePositionX, motionValue, mobilePositionZ],
   };
 }

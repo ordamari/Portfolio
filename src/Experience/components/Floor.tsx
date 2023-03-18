@@ -1,32 +1,49 @@
+import { extend } from "@react-three/fiber";
+import { MotionValue, useTransform } from "framer-motion";
 import * as THREE from "three";
+import { motion } from "framer-motion-3d";
+
+extend(THREE);
 
 type PrivateProps = {
-  //   firstCircleRef: React.RefObject<THREE.Mesh>;
-  //   secondCircleRef: React.RefObject<THREE.Mesh>;
-  //   thirdCircleRef: React.RefObject<THREE.Mesh>;
+  firstMoveProgress: MotionValue<number>;
+  secondMoveProgress: MotionValue<number>;
+  thirdMoveProgress: MotionValue<number>;
 };
 
-export function Floor({}: //   firstCircleRef,
-//   secondCircleRef,
-//   thirdCircleRef,
-PrivateProps) {
+export function Floor({
+  firstMoveProgress,
+  secondMoveProgress,
+  thirdMoveProgress,
+}: PrivateProps) {
+  const firstFloorScale = useTransform(firstMoveProgress, (v) => {
+    const coefficient = 1 - v;
+    return coefficient * 3;
+  });
+  const secondFloorScale = useTransform(secondMoveProgress, (v) => {
+    const coefficient = 1 - v;
+    return coefficient * 3;
+  });
+  const thirdFloorScale = useTransform(thirdMoveProgress, (v) => {
+    const coefficient = 1 - v;
+    return coefficient * 3;
+  });
+
   return (
     <>
-      <mesh
-        // ref={firstCircleRef}
+      <motion.mesh
         rotation-x={Math.PI * -0.5}
-        scale={0}
+        scale={firstFloorScale}
         receiveShadow
         position-y={-0.29}
         name="circle-first"
       >
         <circleGeometry attach="geometry" args={[5, 64]} />
         <meshStandardMaterial attach="material" color="#404258" />
-      </mesh>
-      <mesh
-        // ref={secondCircleRef}
+      </motion.mesh>
+      <motion.mesh
         rotation-x={Math.PI * -0.5}
-        scale={0}
+        scale={secondFloorScale}
         receiveShadow
         position-y={-0.28}
         position-x={1.5}
@@ -34,18 +51,17 @@ PrivateProps) {
       >
         <circleGeometry attach="geometry" args={[5, 64]} />
         <meshStandardMaterial attach="material" color="#474E68" />
-      </mesh>
-      <mesh
-        // ref={thirdCircleRef}
+      </motion.mesh>
+      <motion.mesh
         rotation-x={Math.PI * -0.5}
-        scale={0}
+        scale={thirdFloorScale}
         receiveShadow
         position-y={-0.27}
         name="circle-third"
       >
         <circleGeometry attach="geometry" args={[5, 64]} />
         <meshStandardMaterial attach="material" color="#50577A" />
-      </mesh>
+      </motion.mesh>
 
       <mesh receiveShadow position-y={-0.3} rotation-x={Math.PI * -0.5}>
         <planeGeometry attach="geometry" args={[100, 100]} />

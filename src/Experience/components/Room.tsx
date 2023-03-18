@@ -65,8 +65,15 @@ export function Room({
     <motion.group
       scale={room.scale}
       rotation-y={room.rotationY}
-      position-x={room.positionX}
-      position-z={room.positionZ}
+      position={
+        room.position as [
+          MotionValue<number>,
+          MotionValue<number>,
+          MotionValue<number>
+        ]
+      }
+      // position-x={room.positionX}
+      // position-z={room.positionZ}
       dispose={null}
     >
       <group name="Scene">

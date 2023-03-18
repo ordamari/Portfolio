@@ -85,7 +85,7 @@ export function useEntranceAnimation() {
 
   return {
     startAnimation,
-    floorZScale,
+    floorZScale: smoothFloorZScale,
     minifloor1Scale: [
       smoothMiniFloor1ScaleX,
       smoothMiniFloor1ScaleY,

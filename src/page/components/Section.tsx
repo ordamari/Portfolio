@@ -1,3 +1,8 @@
+import { useMotionTemplate, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
+import { useRef } from "react";
+import { assets } from "../../assets/assets";
+
 type SectionPrivateProps = {
   children: React.ReactNode;
   sectionClass?: string;
@@ -18,13 +23,70 @@ export function Section({
   sectionClass = "section",
   side,
 }: SectionPrivateProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: scrollTopBorderRadius } = useScroll({
+    target: ref,
+    offset: assets.sectionTopScrollOffset,
+  });
+  const { scrollYProgress: scrollBottomBorderRadius } = useScroll({
+    target: ref,
+    offset: assets.sectionBottomScrollOffset,
+  });
+  const { scrollYProgress: scrollProgressBar } = useScroll({
+    target: ref,
+    offset: assets.scrollOffset,
+  });
+
+  const progressBarScaleY = useTransform(scrollProgressBar, (v) => {
+    return 1 - v;
+  });
+
+  const borderRadiusTop = useTransform(scrollTopBorderRadius, (v) => {
+    return 700 - v * 690;
+  });
+
+  const borderRadiusBottom = useTransform(scrollBottomBorderRadius, (v) => {
+    return 10 + v * 690;
+  });
+
+  const progressBarTop = useTransform(scrollProgressBar, (v) => {
+    return (1 - v) * 100;
+  });
+
+  const progressBarTransform = useMotionTemplate`scaleY(${progressBarScaleY}) translateY(-100%)`;
+  const progressBarTopPercent = useMotionTemplate`${progressBarTop}%`;
+
   return (
-    <section className={`${sectionClass} ${side} section`}>
-      <div className={`progress-wrapper progress-bar-wrapper-${side}`}>
-        <div className="progress-bar"></div>
-      </div>
+    <motion.section
+      style={
+        side === "right"
+          ? {
+              borderTopLeftRadius: borderRadiusTop,
+              borderBottomLeftRadius: borderRadiusBottom,
+            }
+          : {
+              borderTopRightRadius: borderRadiusTop,
+              borderBottomRightRadius: borderRadiusBottom,
+            }
+      }
+      ref={ref}
+      className={`${sectionClass} ${side} section`}
+    >
+      <motion.div
+        style={{
+          top: progressBarTopPercent,
+        }}
+        className={`progress-wrapper progress-bar-wrapper-${side}`}
+      >
+        <motion.div
+          style={{
+            transform: progressBarTransform,
+          }}
+          className="progress-bar"
+        ></motion.div>
+      </motion.div>
       {children}
-    </section>
+    </motion.section>
   );
 }
 

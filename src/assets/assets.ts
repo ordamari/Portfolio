@@ -15,8 +15,18 @@ export const assets = {
     },
   },
   scrollOffset: ["end end", "start start"] as ["end end", "start start"],
+  sectionTopScrollOffset: ["start end", "start start"] as [
+    "start end",
+    "start start"
+  ],
+  sectionBottomScrollOffset: ["end end", "end start"] as [
+    "end end",
+    "end start"
+  ],
   roomScale: 0.11,
   roomMobileScale: 0.07,
+  mobileFirstMoveScale: 0.1,
+  mobileSecondMoveScale: 0.25,
   secondPartScale: 0.4,
   secondPartZ: 1,
   baseCameraPosition: [0, 5.65, 10],
@@ -25,6 +35,8 @@ export const assets = {
   lampScale: 0.71,
   minifloorScale: [2.14, 1, 0.9] as [number, number, number],
   mailboxScale: 0.101,
+  mobileSecondMoveX: 1.5,
+  mobileThirdMoveZ: -4.5,
   floorScaleStart: 0,
   floorScale: 5.09,
 };

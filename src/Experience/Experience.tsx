@@ -2,7 +2,8 @@ import { MotionValue } from "framer-motion";
 import { Group } from "three";
 import { Theme } from "../assets/types/theme";
 import { Environment } from "./components/Environment";
-import { Room } from "./components/Room2";
+import { Floor } from "./components/Floor";
+import { Room } from "./components/Room";
 
 type PrivateProps = {
   roomRef: React.RefObject<Group>;
@@ -34,7 +35,11 @@ export function Experience({
         thirdMoveProgress={thirdMoveProgress}
       />
       <Environment theme={theme} />
-      {/* <Floor /> */}
+      <Floor
+        firstMoveProgress={firstMoveProgress}
+        secondMoveProgress={secondMoveProgress}
+        thirdMoveProgress={thirdMoveProgress}
+      />
       {/* <Controls /> */}
     </>
   );
