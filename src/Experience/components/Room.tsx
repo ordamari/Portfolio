@@ -74,6 +74,43 @@ export function Room({
     };
   }, []);
 
+  const screenVideoElement = useMemo(() => {
+    const video = document.createElement("video");
+    video.src = "./textures/coding.mp4";
+    video.muted = true;
+    video.loop = true;
+    video.play();
+    document.body.appendChild(video);
+    return video;
+  }, []);
+
+  const televisionVideoElement = useMemo(() => {
+    const video = document.createElement("video");
+    video.src = "./textures/technologies.mp4";
+    video.muted = true;
+    video.loop = true;
+    video.play();
+    document.body.appendChild(video);
+    return video;
+  }, []);
+
+  const screenMaterial = useMemo(() => {
+    const texture = new THREE.VideoTexture(screenVideoElement);
+    const material = new THREE.MeshStandardMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+    });
+    return material;
+  }, []);
+  const televisionMaterial = useMemo(() => {
+    const texture = new THREE.VideoTexture(televisionVideoElement);
+    const material = new THREE.MeshStandardMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+    });
+    return material;
+  }, []);
+
   return (
     <motion.group
       scale={room.scale}
@@ -326,7 +363,7 @@ export function Room({
           castShadow
           receiveShadow
           geometry={nodes["screen-plan"].geometry}
-          material={materials.screen}
+          material={screenMaterial}
           position={[-8.15, 6.37, 4.39]}
           animate={preloader.sixth ? "after" : "before"}
           variants={{
@@ -507,7 +544,7 @@ export function Room({
           receiveShadow
           scale={0}
           geometry={nodes.televisionScreen.geometry}
-          material={materials.televisionScreen}
+          material={televisionMaterial}
           position={[2.98, 7.34, -8.98]}
           rotation={[0, Math.PI / 2, 0]}
           animate={preloader.sixth ? "after" : "before"}
@@ -518,7 +555,7 @@ export function Room({
               scaleX: 0,
             },
             after: {
-              scaleY: 2.59,
+              scaleY: -2.59,
               scaleZ: 5.323,
               scaleX: 0.025,
             },
