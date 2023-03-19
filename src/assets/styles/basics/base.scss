@@ -20,3 +20,7 @@ span,
 svg {
     transition: background-color 0.5s, color 0.5s;
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+}

@@ -1,5 +1,5 @@
 import { ThreeElements } from "@react-three/fiber";
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useState } from "react";
 import * as THREE from "three";
 import { MotionCanvas } from "framer-motion-3d";
 import { Experience } from "./Experience/Experience";
@@ -12,14 +12,15 @@ import { store } from "./store/store";
 import { useTheme } from "./hooks/useTheme";
 import { Page } from "./page/Page";
 import { useScroll } from "framer-motion";
+import { Status } from "./assets/types/status";
 
 const frustum = 3;
 function App() {
   const roomRef = useRef<THREE.Group>(null);
-  const roomChildrenRefs = useRef<{ [key: string]: any }>({});
   const mouseX = useMotionValue(0);
   const [ref, bounds] = useMeasure({ scroll: false });
   const [theme, toggleTheme] = useTheme();
+  const [status, setStatus] = useState<Status>("PENDING");
   const firstMoveRef = useRef<HTMLDivElement>(null);
   const secondMoveRef = useRef<HTMLDivElement>(null);
   const thirdMoveRef = useRef<HTMLDivElement>(null);
@@ -60,15 +61,18 @@ function App() {
             }}
             shadows
           >
-            <Experience
-              mouseX={mouseX}
-              roomRef={roomRef}
-              roomChildrenRefs={roomChildrenRefs}
-              theme={theme}
-              firstMoveProgress={firstMoveProgress}
-              secondMoveProgress={secondMoveProgress}
-              thirdMoveProgress={thirdMoveProgress}
-            />
+            <Suspense>
+              <Experience
+                mouseX={mouseX}
+                roomRef={roomRef}
+                theme={theme}
+                firstMoveProgress={firstMoveProgress}
+                secondMoveProgress={secondMoveProgress}
+                thirdMoveProgress={thirdMoveProgress}
+                setStatus={setStatus}
+                status={status}
+              />
+            </Suspense>
           </MotionCanvas>
         </MotionConfig>
       </div>
@@ -78,6 +82,7 @@ function App() {
         thirdMoveRef={thirdMoveRef}
         theme={theme}
         toggleTheme={toggleTheme}
+        status={status}
       />
     </div>
   );

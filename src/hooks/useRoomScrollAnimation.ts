@@ -1,7 +1,8 @@
 import { useThree } from "@react-three/fiber";
 import { MotionValue, useTransform, useMotionValue } from "framer-motion";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { assets } from "../assets/assets";
+import { Status } from "../assets/types/status";
 import { useMotionsValues } from "./useMotionsValues";
 import { useRect } from "./useRect";
 
@@ -9,10 +10,12 @@ export function useRoomScrollAnimation(
   mouseX: MotionValue<number>,
   firstMoveProgress: MotionValue<number>,
   secondMoveProgress: MotionValue<number>,
-  thirdMoveProgress: MotionValue<number>
+  thirdMoveProgress: MotionValue<number>,
+  status: Status
 ) {
   const rect = useRect(document.body);
   const camera = useThree((state) => state.camera);
+  const flag = useRef(false);
 
   const mouseToLightRotation = useCallback(
     (v: number) => {
@@ -25,9 +28,8 @@ export function useRoomScrollAnimation(
     if (!rect) return 1;
     return rect.width;
   }, [rect]);
-
   const roomFirstTargetX = useMemo(() => {
-    return width * 0.0015;
+    return width * 0.00165;
   }, [width]);
 
   const scale = useMemo(() => {
@@ -71,6 +73,10 @@ export function useRoomScrollAnimation(
   const mobileSecondMoveRoomScale = useTransform(secondMoveProgress, (v) => {
     const coefficient = 1 - v;
     const path = assets.mobileSecondMoveScale - assets.mobileFirstMoveScale;
+    if (flag.current) {
+      flag.current = false;
+      return 0;
+    }
     return assets.mobileFirstMoveScale + path * coefficient;
   });
 
@@ -111,10 +117,13 @@ export function useRoomScrollAnimation(
 
   return {
     scale: width > 960 ? roomScale : mobileRoomScale,
-    rotationY,
-    position:
-      width > 960
-        ? [positionX, motionValue, positionZ]
-        : [mobilePositionX, motionValue, mobilePositionZ],
+    rotationY: rotationY,
+    position: (width > 960
+      ? [positionX, motionValue, positionZ]
+      : [mobilePositionX, motionValue, mobilePositionZ]) as [
+      MotionValue<number>,
+      MotionValue<number>,
+      MotionValue<number>
+    ],
   };
 }

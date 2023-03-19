@@ -15,25 +15,29 @@ import { motion } from "framer-motion-3d";
 import { useSmoothTransform } from "../../hooks/useSmoothTransform";
 import { useEntranceAnimation } from "../../hooks/useEntranceAnimation";
 import { useRoomScrollAnimation } from "../../hooks/useRoomScrollAnimation";
+import { Status } from "../../assets/types/status";
+import { usePreloader } from "../../hooks/usePreloader";
 
 extend(THREE);
 
 type PrivateProps = {
   roomRef: React.RefObject<THREE.Group>;
-  roomChildrenRefs: React.RefObject<{ [key: string]: any }>;
   mouseX: MotionValue<number>;
   firstMoveProgress: MotionValue<number>;
   secondMoveProgress: MotionValue<number>;
   thirdMoveProgress: MotionValue<number>;
+  setStatus: (status: Status) => void;
+  status: Status;
 };
 
 export function Room({
   roomRef,
-  roomChildrenRefs,
   mouseX,
   firstMoveProgress,
   secondMoveProgress,
   thirdMoveProgress,
+  setStatus,
+  status,
 }: PrivateProps) {
   //@ts-ignore
   const { nodes, materials, animations } = useGLTF("./models/room.glb");
@@ -44,8 +48,16 @@ export function Room({
     mouseX,
     firstMoveProgress,
     secondMoveProgress,
-    thirdMoveProgress
+    thirdMoveProgress,
+    status
   );
+  const preloader = usePreloader(setStatus);
+  const rect = useRect(document.body);
+
+  const width = useMemo(() => {
+    if (!rect) return 1;
+    return rect.width;
+  }, [rect]);
 
   function startEntranceAnimation(v: number) {
     const coefficient = 1 - v;
@@ -55,6 +67,7 @@ export function Room({
   }
 
   useEffect(() => {
+    setStatus("LOAD_ROOM");
     const unsubscribe = thirdMoveProgress.on("change", startEntranceAnimation);
     return () => {
       unsubscribe();
@@ -65,19 +78,43 @@ export function Room({
     <motion.group
       scale={room.scale}
       rotation-y={room.rotationY}
-      position={
-        room.position as [
-          MotionValue<number>,
-          MotionValue<number>,
-          MotionValue<number>
-        ]
-      }
-      // position-x={room.positionX}
-      // position-z={room.positionZ}
+      animate={preloader.first ? "after" : "before"}
+      variants={{
+        before: {
+          x: width > 960 ? -1 : 0,
+          y: width > 960 ? 0 : -1,
+        },
+        after: {
+          x: 0,
+          y: 0,
+        },
+      }}
+      position={room.position}
       dispose={null}
     >
       <group name="Scene">
-        <group name="hiddenCube" position={[-11.65, 1.14, -11.23]}>
+        <motion.group
+          name="hiddenCube"
+          position={[0, -1.5, 0]}
+          animate={
+            preloader.first ? (preloader.second ? "second" : "first") : "before"
+          }
+          variants={{
+            before: {
+              scale: 1.4,
+            },
+            first: {
+              scale: 10,
+              rotateY: 2 * Math.PI,
+              y: 11.1551,
+              z: -0.822436,
+              x: 0.608948,
+            },
+            after: {
+              scale: -1,
+            },
+          }}
+        >
           <mesh
             name="Cube118"
             castShadow
@@ -92,17 +129,45 @@ export function Room({
             geometry={nodes.Cube118_1.geometry}
             material={materials.earphones}
           />
-        </group>
-        <mesh
+        </motion.group>
+
+        <motion.mesh
+          scale={0}
           name="airCondation"
           castShadow
           receiveShadow
+          animate={preloader.fourth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 4,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 0.785,
+              scaleZ: 4.055,
+              scaleX: 0.553,
+            },
+          }}
           geometry={nodes.airCondation.geometry}
           material={materials.earphones}
           position={[-8.7, 14.72, 5.63]}
-          scale={[0.55, 0.79, 4.06]}
         />
-        <group name="room" position={[0.34, 10.73, 0.45]} scale={10.61}>
+        <motion.group
+          scale={0}
+          animate={preloader.second ? "after" : "before"}
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 10.611,
+            },
+          }}
+          name="room"
+          position={[0.34, 10.73, 0.45]}
+          // scale={10.61}
+        >
           <mesh
             name="Cube004"
             castShadow
@@ -124,17 +189,33 @@ export function Room({
             geometry={nodes.Cube004_2.geometry}
             material={materials.key}
           />
-        </group>
-        <mesh
+        </motion.group>
+
+        <motion.mesh
+          scale={0}
           name="picture"
           castShadow
           receiveShadow
           geometry={nodes.picture.geometry}
           material={nodes.picture.material}
           position={[-3.7, 14.29, -9.04]}
-          scale={[4.36, 2.19, 0.2]}
+          animate={preloader.fifth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 2.193,
+              scaleZ: 0.2,
+              scaleX: 4.358,
+            },
+          }}
         />
-        <mesh
+
+        <motion.mesh
+          scale={0}
           name="mousePad"
           castShadow
           receiveShadow
@@ -142,12 +223,39 @@ export function Room({
           material={materials.mousePad}
           position={[-6.74, 5.08, 4.34]}
           rotation={[0, 0, -0.06]}
-          scale={[1.22, 1, 3.46]}
+          animate={preloader.fourth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleX: 0,
+              scaleY: 0,
+              scaleZ: 0,
+            },
+            after: {
+              scaleX: 1.225,
+              scaleY: 1,
+              scaleZ: 3.462,
+            },
+          }}
         />
-        <group
+
+        <motion.group
+          scale={0}
           name="rug"
+          animate={preloader.fourth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleX: 0,
+              scaleY: 0,
+              scaleZ: 0,
+            },
+            after: {
+              scaleY: 0.05,
+              scaleZ: 6.329,
+              scaleX: 6.329,
+            },
+          }}
           position={[3.8, 1.06, 0.71]}
-          scale={[6.33, 0.05, 6.33]}
+          // scale={[6.33, 0.05, 6.33]}
         >
           <mesh
             name="Cylinder006"
@@ -163,17 +271,33 @@ export function Room({
             geometry={nodes.Cylinder006_1.geometry}
             material={materials.earphones}
           />
-        </group>
-        <mesh
+        </motion.group>
+
+        <motion.mesh
+          scale={0}
           name="miniRug"
+          animate={preloader.fifth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 1,
+              scaleZ: 1.43,
+              scaleX: 2.564,
+            },
+          }}
           castShadow
           receiveShadow
           geometry={nodes.miniRug.geometry}
           material={materials.key}
           position={[4.44, 1.01, 9.2]}
-          scale={[2.56, 1, 1.43]}
         />
-        <mesh
+
+        <motion.mesh
+          scale={0}
           name="mouse"
           castShadow
           receiveShadow
@@ -181,22 +305,64 @@ export function Room({
           material={materials.key}
           position={[-6.65, 5.11, 2.23]}
           rotation={[Math.PI, -0.39, Math.PI]}
-          scale={[-0.29, -0.11, -0.23]}
+          animate={preloader.sixth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: -0.106,
+              scaleZ: 0.234,
+              scaleX: 0.288,
+            },
+          }}
         />
-        <mesh
+
+        <motion.mesh
+          scale={0}
           name="screen-plan"
           castShadow
           receiveShadow
           geometry={nodes["screen-plan"].geometry}
           material={materials.screen}
           position={[-8.15, 6.37, 4.39]}
-          scale={[0.02, 0.84, 3.01]}
+          animate={preloader.sixth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 0.844,
+              scaleZ: 3.009,
+              scaleX: 0.025,
+            },
+          }}
         />
-        <group
+        <motion.group
+          scale={0}
           name="chair"
           position={[-3.77, 3.53, 4.45]}
-          rotation={[0, 0, 2.98]}
-          scale={[-0.11, -1.9, -1]}
+          rotation={[Math.PI, Math.PI, 2.98]}
+          animate={preloader.seventh ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+              rotateY: Math.PI,
+            },
+            after: {
+              scaleY: 1.901,
+              scaleZ: 1,
+              scaleX: 0.107,
+              rotateY: Math.PI * 5,
+            },
+          }}
+          // scale={[-0.11, -1.9, -1]}
         >
           <mesh
             name="Cube030"
@@ -219,11 +385,25 @@ export function Room({
             geometry={nodes.Cube030_2.geometry}
             material={materials.mousePad}
           />
-        </group>
-        <group
+        </motion.group>
+
+        <motion.group
+          scale={0}
           name="screen"
           position={[-8.15, 6.37, 4.39]}
-          scale={[0.02, 0.84, 3.01]}
+          animate={preloader.sixth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 0.844,
+              scaleZ: 3.009,
+              scaleX: 0.025,
+            },
+          }}
         >
           <mesh
             name="Cube002"
@@ -239,12 +419,27 @@ export function Room({
             geometry={nodes.Cube002_1.geometry}
             material={materials.screenHolder}
           />
-        </group>
-        <group
+        </motion.group>
+
+        <motion.group
+          scale={0}
           name="table"
+          animate={preloader.third ? "after" : "before"}
+          variants={{
+            before: {
+              scaleX: 0,
+              scaleY: 0,
+              scaleZ: 0,
+            },
+            after: {
+              scaleY: 0.134084,
+              scaleZ: 1.68643,
+              scaleX: 2.09269,
+            },
+          }}
           position={[-8.01, 1.03, 4.41]}
           rotation={[0, 0, -0.06]}
-          scale={[2.09, 0.13, 1.69]}
+          // scale={[2.09, 0.13, 1.69]}
         >
           <mesh
             name="Cube"
@@ -260,17 +455,31 @@ export function Room({
             geometry={nodes.Cube_1.geometry}
             material={materials.tableLeg}
           />
-        </group>
-        <mesh
+        </motion.group>
+        <motion.mesh
+          scale={0}
           name="chairLegs"
           castShadow
           receiveShadow
           geometry={nodes.chairLegs.geometry}
           material={materials.chairPlastic}
           position={[-3.53, 1.44, 4.42]}
-          scale={[0.05, 0.08, 0.08]}
+          animate={preloader.sixth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 0.08,
+              scaleZ: 0.08,
+              scaleX: 0.051,
+            },
+          }}
         />
-        <mesh
+        <motion.mesh
+          scale={0}
           name="earphones"
           castShadow
           receiveShadow
@@ -278,19 +487,58 @@ export function Room({
           material={materials.earphones}
           position={[-7.35, 6.45, 8.4]}
           rotation={[-1.56, -0.02, -1.13]}
-          scale={[0.53, 1.04, 0.53]}
+          animate={preloader.seventh ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 1.044,
+              scaleZ: 0.528,
+              scaleX: 0.528,
+            },
+          }}
         />
-        <mesh
+        <motion.mesh
           name="televisionScreen"
           castShadow
           receiveShadow
+          scale={0}
           geometry={nodes.televisionScreen.geometry}
           material={materials.televisionScreen}
           position={[2.98, 7.34, -8.98]}
           rotation={[0, Math.PI / 2, 0]}
-          scale={[0.02, 2.59, 5.32]}
+          animate={preloader.sixth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 2.59,
+              scaleZ: 5.323,
+              scaleX: 0.025,
+            },
+          }}
         />
-        <group name="sideboard" position={[3.02, 0.99, -8.03]} scale={0.62}>
+        <motion.group
+          scale={0}
+          name="sideboard"
+          position={[3.02, 0.99, -8.03]}
+          animate={preloader.third ? "after" : "before"}
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 0.621,
+            },
+          }}
+          // scale={0.62}
+        >
           <mesh
             name="Cube100"
             castShadow
@@ -319,8 +567,10 @@ export function Room({
             geometry={nodes.Cube100_3.geometry}
             material={materials.tableBoard}
           />
-        </group>
-        <mesh
+        </motion.group>
+
+        <motion.mesh
+          scale={0}
           name="television"
           castShadow
           receiveShadow
@@ -328,9 +578,34 @@ export function Room({
           material={materials.screenFrame}
           position={[2.98, 7.34, -8.98]}
           rotation={[0, Math.PI / 2, 0]}
-          scale={[0.02, 2.59, 5.32]}
+          animate={preloader.sixth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 2.59,
+              scaleZ: 5.323,
+              scaleX: 0.025,
+            },
+          }}
         />
-        <group name="smallSpeaker" position={[4.23, 3.39, -8.38]} scale={0.3}>
+        <motion.group
+          scale={0}
+          animate={preloader.fourth ? "after" : "before"}
+          name="smallSpeaker"
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 0.303,
+            },
+          }}
+          position={[4.23, 3.39, -8.38]}
+        >
           <mesh
             name="Cube112"
             castShadow
@@ -352,12 +627,27 @@ export function Room({
             geometry={nodes.Cube112_2.geometry}
             material={materials.key}
           />
-        </group>
-        <group
+        </motion.group>
+
+        <motion.group
+          animate={preloader.fifth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 0.02,
+              scaleZ: 0.077,
+              scaleX: 0.077,
+            },
+          }}
           name="keyboard"
           position={[-6.61, 5.08, 4.33]}
           rotation={[0, 0, -0.06]}
-          scale={[0.08, 0.02, 0.08]}
+          scale={0}
+          // scale={[0.08, 0.02, 0.08]}
         >
           <mesh
             name="Cube019"
@@ -373,22 +663,43 @@ export function Room({
             geometry={nodes.Cube019_1.geometry}
             material={materials.earphones}
           />
-        </group>
-        <mesh
+        </motion.group>
+
+        <motion.mesh
           name="earphonesHolder"
           castShadow
+          animate={preloader.fifth ? "after" : "before"}
+          variants={{
+            before: {},
+            after: {
+              scaleY: 0.055,
+              scaleZ: 0.341,
+              scaleX: 0.341,
+            },
+          }}
           receiveShadow
           geometry={nodes.earphonesHolder.geometry}
           material={materials.key}
           position={[-7.32, 5.07, 8.4]}
           rotation={[0, 0.45, 0]}
-          scale={[0.34, 0.06, 0.34]}
+          scale={0}
+          // scale={[0.34, 0.06, 0.34]}
         />
-        <group
+        <motion.group
           name="ps4"
           position={[-0.99, 3.49, -8.01]}
           rotation={[Math.PI / 2, 0, 0]}
-          scale={0.79}
+          animate={preloader.fifth ? "after" : "before"}
+          scale={0}
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 0.788,
+            },
+          }}
+          // scale={0.79}
         >
           <mesh
             name="meshId0_name"
@@ -474,8 +785,22 @@ export function Room({
             geometry={nodes.meshId0_name_11.geometry}
             material={materials["Material.007"]}
           />
-        </group>
-        <group name="itoIto" position={[2.95, 2.11, -7.54]} scale={0}>
+        </motion.group>
+
+        <motion.group
+          name="itoIto"
+          animate={preloader.fourth ? "after" : "before"}
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 0.00465,
+            },
+          }}
+          position={[2.95, 2.11, -7.54]}
+          scale={0}
+        >
           <mesh
             name="01"
             castShadow
@@ -490,7 +815,129 @@ export function Room({
             geometry={nodes["01_1"].geometry}
             material={materials["Material.014"]}
           />
-        </group>
+        </motion.group>
+
+        <motion.group
+          name="opeOpe"
+          position={[1.82, 2.43, -7.46]}
+          scale={0}
+          animate={preloader.fourth ? "after" : "before"}
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 0.011845,
+            },
+          }}
+        >
+          <mesh
+            name="01001"
+            castShadow
+            receiveShadow
+            geometry={nodes["01001"].geometry}
+            material={materials["Material.017"]}
+          />
+          <mesh
+            name="01001_1"
+            castShadow
+            receiveShadow
+            geometry={nodes["01001_1"].geometry}
+            material={materials["Material.016"]}
+          />
+        </motion.group>
+
+        <motion.group
+          name="meraMera"
+          position={[5.51, 2.65, -7.61]}
+          scale={0}
+          animate={preloader.fourth ? "after" : "before"}
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 0.288,
+            },
+          }}
+          // scale={0.29}
+        >
+          <mesh
+            name="Cube111"
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube111.geometry}
+            material={materials["Fruit_Tip.001"]}
+          />
+          <mesh
+            name="Cube111_1"
+            castShadow
+            receiveShadow
+            geometry={nodes.Cube111_1.geometry}
+            material={materials.Inner}
+          />
+        </motion.group>
+
+        <motion.group
+          name="yamiYami"
+          position={[0.57, 2.13, -7.55]}
+          scale={0}
+          animate={preloader.fourth ? "after" : "before"}
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 0.005,
+            },
+          }}
+        >
+          <mesh
+            name="01002"
+            castShadow
+            receiveShadow
+            geometry={nodes["01002"].geometry}
+            material={materials["Material.019"]}
+          />
+          <mesh
+            name="01002_1"
+            castShadow
+            receiveShadow
+            geometry={nodes["01002_1"].geometry}
+            material={materials["Material.018"]}
+          />
+        </motion.group>
+
+        <motion.group
+          name="gomuGomugomuGomu"
+          position={[4.16, 2.37, -7.55]}
+          // scale={0.01}
+          scale={0}
+          animate={preloader.fourth ? "after" : "before"}
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 0.006,
+            },
+          }}
+        >
+          <mesh
+            name="01-gomu_gomu"
+            castShadow
+            receiveShadow
+            geometry={nodes["01-gomu_gomu"].geometry}
+            material={materials.sunny}
+          />
+          <mesh
+            name="01-gomu_gomu_1"
+            castShadow
+            receiveShadow
+            geometry={nodes["01-gomu_gomu_1"].geometry}
+            material={materials["Material.013"]}
+          />
+        </motion.group>
 
         <motion.mesh
           name="floor"
@@ -499,7 +946,12 @@ export function Room({
           geometry={nodes.floor.geometry}
           position={[3.96, 0.46, 9.11]}
           material={materials.wall}
-          scale={[5.09, 4.56, 0]}
+          animate={preloader.third ? "after" : "before"}
+          scale={[0, 0, 0]}
+          variants={{
+            before: { scaleX: 0, scaleY: 0 },
+            after: { scaleX: 5.09, scaleY: 4.56 },
+          }}
           scale-z={entrance.floorZScale}
         />
         <motion.mesh
@@ -567,7 +1019,22 @@ export function Room({
             material={materials.earphones}
           />
         </motion.group>
-        <group name="thousendSunny" position={[7.56, 3.76, -8.04]} scale={0.27}>
+        <motion.group
+          name="thousendSunny"
+          animate={preloader.fifth ? "after" : "before"}
+          variants={{
+            before: {
+              scale: 0,
+            },
+            after: {
+              scale: 0.266,
+            },
+          }}
+          position={[7.56, 3.76, -8.04]}
+          scale={0}
+
+          // scale={0.27}
+        >
           <mesh
             name="Cube090"
             castShadow
@@ -582,84 +1049,30 @@ export function Room({
             geometry={nodes.Cube090_1.geometry}
             material={materials.sunny_masts}
           />
-        </group>
-        <mesh
+        </motion.group>
+        <motion.mesh
           name="pictureImage"
           castShadow
           receiveShadow
           geometry={nodes.pictureImage.geometry}
           material={materials.picture}
           position={[-3.7, 14.29, -9.04]}
-          scale={[4.36, 2.19, 0.2]}
+          // scale={[4.36, 2.19, 0.2]}
+          scale={0}
+          animate={preloader.fifth ? "after" : "before"}
+          variants={{
+            before: {
+              scaleY: 0,
+              scaleZ: 0,
+              scaleX: 0,
+            },
+            after: {
+              scaleY: 2.193,
+              scaleZ: 0.2,
+              scaleX: 4.358,
+            },
+          }}
         />
-        <group name="opeOpe" position={[1.82, 2.43, -7.46]} scale={0.01}>
-          <mesh
-            name="01001"
-            castShadow
-            receiveShadow
-            geometry={nodes["01001"].geometry}
-            material={materials["Material.017"]}
-          />
-          <mesh
-            name="01001_1"
-            castShadow
-            receiveShadow
-            geometry={nodes["01001_1"].geometry}
-            material={materials["Material.016"]}
-          />
-        </group>
-        <group name="meraMera" position={[5.51, 2.65, -7.61]} scale={0.29}>
-          <mesh
-            name="Cube111"
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube111.geometry}
-            material={materials["Fruit_Tip.001"]}
-          />
-          <mesh
-            name="Cube111_1"
-            castShadow
-            receiveShadow
-            geometry={nodes.Cube111_1.geometry}
-            material={materials.Inner}
-          />
-        </group>
-        <group name="yamiYami" position={[0.57, 2.13, -7.55]} scale={0}>
-          <mesh
-            name="01002"
-            castShadow
-            receiveShadow
-            geometry={nodes["01002"].geometry}
-            material={materials["Material.019"]}
-          />
-          <mesh
-            name="01002_1"
-            castShadow
-            receiveShadow
-            geometry={nodes["01002_1"].geometry}
-            material={materials["Material.018"]}
-          />
-        </group>
-        <group
-          name="gomuGomugomuGomu"
-          position={[4.16, 2.37, -7.55]}
-          scale={0.01}
-        >
-          <mesh
-            name="01-gomu_gomu"
-            castShadow
-            receiveShadow
-            geometry={nodes["01-gomu_gomu"].geometry}
-            material={materials.sunny}
-          />
-          <mesh
-            name="01-gomu_gomu_1"
-            castShadow
-            receiveShadow
-            geometry={nodes["01-gomu_gomu_1"].geometry}
-            material={materials["Material.013"]}
-          />
-        </group>
       </group>
     </motion.group>
   );

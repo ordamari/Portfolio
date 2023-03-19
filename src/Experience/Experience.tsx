@@ -1,5 +1,7 @@
 import { MotionValue } from "framer-motion";
+import { Suspense } from "react";
 import { Group } from "three";
+import { Status } from "../assets/types/status";
 import { Theme } from "../assets/types/theme";
 import { Environment } from "./components/Environment";
 import { Floor } from "./components/Floor";
@@ -7,32 +9,35 @@ import { Room } from "./components/Room";
 
 type PrivateProps = {
   roomRef: React.RefObject<Group>;
-  roomChildrenRefs: React.RefObject<{ [key: string]: any }>;
   mouseX: MotionValue<number>;
   theme: Theme;
   firstMoveProgress: MotionValue<number>;
   secondMoveProgress: MotionValue<number>;
   thirdMoveProgress: MotionValue<number>;
+  setStatus: (status: Status) => void;
+  status: Status;
 };
 
 export function Experience({
   roomRef,
-  roomChildrenRefs,
   mouseX,
   theme,
   firstMoveProgress,
   secondMoveProgress,
   thirdMoveProgress,
+  setStatus,
+  status,
 }: PrivateProps) {
   return (
     <>
       <Room
         mouseX={mouseX}
         roomRef={roomRef}
-        roomChildrenRefs={roomChildrenRefs}
         firstMoveProgress={firstMoveProgress}
         secondMoveProgress={secondMoveProgress}
         thirdMoveProgress={thirdMoveProgress}
+        setStatus={setStatus}
+        status={status}
       />
       <Environment theme={theme} />
       <Floor

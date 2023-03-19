@@ -1,1 +1,13 @@
-export type Status = "pending" | "load room";
+export type Status =
+  | "PENDING"
+  | "LOAD_ROOM"
+  | "WELCOME_MESSAGE"
+  | "START_FIRST"
+  | "START_SECOND"
+  | "START_THIRD"
+  | "START_FOURTH"
+  | "START_FIFTH"
+  | "START_SIXTH"
+  | "START_SEVENTH"
+  | "START_EIGHTH"
+  | "END_PRELOADER";

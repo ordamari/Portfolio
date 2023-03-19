@@ -1,5 +1,5 @@
 import { MotionValue, useSpring, useTransform } from "framer-motion";
-const springOptions = { stiffness: 600, damping: 30 };
+const springOptions = { stiffness: 600, damping: 30, duration: 3 };
 export function useSmoothTransform(
   value: MotionValue<number>,
   transformer: (number: number) => number

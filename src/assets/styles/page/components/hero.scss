@@ -69,6 +69,43 @@
         animation: bounce 0.5s ease-in infinite alternate;
         // opacity: 0;
 
+        &.hide {
+            opacity: 0;
+        }
+
+    }
+
+    h1,
+    p {
+        &:has(span) {
+            overflow: hidden;
+        }
+    }
+
+    span {
+        display: inline-block;
+
+        &.hide {
+            translate: 0 100px;
+        }
+
+        &.show {
+            translate: 0 0;
+        }
+
+
+
+        &.in {
+
+            @for $i from 1 through 40 {
+                &:nth-child(#{$i}) {
+                    animation-delay: calc(#{$i} * 0.03s);
+                }
+            }
+
+            animation: in 1s ease-in-out forwards;
+            translate: 0 0;
+        }
     }
 }
 

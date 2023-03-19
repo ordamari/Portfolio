@@ -4,5 +4,20 @@
     position: absolute;
     top: 0;
 
+    &.PENDING {
+        .loader {
+            opacity: 1;
+        }
+    }
 
+
+
+}
+
+body {
+    overflow: hidden;
+
+    &:has(.page.END_PRELOADER) {
+        overflow: auto;
+    }
 }

@@ -1,7 +1,7 @@
 export const assets = {
   transition: {
     type: "spring",
-    duration: 0.7,
+    duration: 1,
     bounce: 0.2,
   },
   lightThemes: {
@@ -39,4 +39,8 @@ export const assets = {
   mobileThirdMoveZ: -4.5,
   floorScaleStart: 0,
   floorScale: 5.09,
+  hiddenCubeStartPos: [-1, 0, 0],
+  hiddenCubeMobileStartPos: [0, 0, -1],
+  hiddenCubeFirstScale: 1.4,
+  cameraPositionYAfterAnimation: 6.5,
 };

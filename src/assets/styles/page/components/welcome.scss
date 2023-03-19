@@ -1,0 +1,74 @@
+.welcome {
+    position: fixed;
+    top: 51.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    $letters: 24;
+
+    span {
+        display: inline-block;
+
+        translate: 0 100px;
+
+        // &.hide {
+        //     opacity: 0;
+        // }
+
+        &.show {
+            // opacity: 1;
+            translate: 0 0px;
+
+        }
+
+
+        &.in {
+
+            @for $i from 1 through $letters {
+                &:nth-child(#{$i}) {
+                    animation-delay: calc(#{$i} * 0.03s);
+                }
+            }
+
+            animation: in 1s ease-in-out forwards;
+        }
+
+
+        &.out {
+            @for $i from 1 through $letters {
+                &:nth-child(#{$i}) {
+                    animation-delay: calc(#{$i} * 0.03s);
+                }
+            }
+
+            animation: out 1s ease-in-out forwards;
+        }
+    }
+
+
+}
+
+@keyframes in {
+    0% {
+        translate: 0 100px
+    }
+
+    90% {
+        translate: 0 -4px
+    }
+
+    100% {
+        translate: 0 0
+    }
+}
+
+@keyframes out {
+    0% {
+        translate: 0 0
+    }
+
+    100% {
+        translate: 0 100px
+    }
+
+}
