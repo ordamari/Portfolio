@@ -12,7 +12,7 @@ export type appState = {
 
 const initialState: appState = {
   theme: "light",
-  status: "pending",
+  status: "PENDING",
   aboutSectionScrollProgress: 0,
   workSectionScrollProgress: 0,
   contactSectionScrollProgress: 0,
