@@ -80,7 +80,7 @@ export function Room({
     video.muted = true;
     video.loop = true;
     video.play();
-    document.body.appendChild(video);
+    // document.body.appendChild(video);
     return video;
   }, []);
 
