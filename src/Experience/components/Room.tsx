@@ -102,6 +102,7 @@ export function Room({
     });
     return material;
   }, []);
+
   const televisionMaterial = useMemo(() => {
     const texture = new THREE.VideoTexture(televisionVideoElement);
     const material = new THREE.MeshStandardMaterial({

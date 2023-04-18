@@ -1,31 +1,33 @@
 import { Section } from "./Section";
+import projectsJson from "../../assets/json/projects.json";
+import { Images } from "./Images";
 
 export function MyWorks() {
+  const { projects } = projectsJson;
   return (
     <Section side="right" sectionClass="works">
       <Section.Intro number={2}>My Works</Section.Intro>
       <Section.Detail>
-        <h3 className="section-heading">Lorem ipsum</h3>
-        <p className="section-text">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-          quaerat expedita porro nisi magni inventore voluptatibus tempora.
-          Vitae, modi dolore. Iusto, veritatis perferendis. Pariatur fugit
-          tempora non! Ducimus, quam commodi?
-        </p>
-        <h3 className="section-heading">Lorem ipsum</h3>
-        <p className="section-text">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-          quaerat expedita porro nisi magni inventore voluptatibus tempora.
-          Vitae, modi dolore. Iusto, veritatis perferendis. Pariatur fugit
-          tempora non! Ducimus, quam commodi?
-        </p>
-        <h3 className="section-heading">Lorem ipsum</h3>
-        <p className="section-text">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-          quaerat expedita porro nisi magni inventore voluptatibus tempora.
-          Vitae, modi dolore. Iusto, veritatis perferendis. Pariatur fugit
-          tempora non! Ducimus, quam commodi?
-        </p>
+        {projects.map((project) => {
+          return (
+            <div className="project">
+              <div className="texts-container">
+                <h3 className="section-heading">{project.title}</h3>
+                <p className="section-text">{project.description}</p>
+                <div className="links">
+                  {project.links.map((link) => {
+                    return (
+                      <a href={link.href} target="_blank" rel="noreferrer">
+                        {link.title}
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+              <Images images={project.images} />
+            </div>
+          );
+        })}
       </Section.Detail>
     </Section>
   );

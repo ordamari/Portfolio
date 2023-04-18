@@ -1,0 +1,60 @@
+{
+  "projects": [
+    {
+      "title": "Trello Clone App",
+      "description": "A clone of the popular project management app Trello, using React and SASS. The app allows users to create boards, add lists, and create cards with tasks that can be assigned to team members. The app also features drag-and-drop functionality, allowing users to easily move cards between lists and boards.",
+      "links": [
+        {
+          "title": "App",
+          "href": "https://trello-back-4ft9.onrender.com/#/"
+        },
+        {
+          "title": "GitHub",
+          "href": "https://github.com/ordamari/trello-front"
+        }
+      ],
+      "images": [
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1681848776/coqezo2r8gz5pospu6mr.jpg",
+          "alt": "Landing"
+        },
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1633509805/u5orvpos1l7rbosfx34l.jpg",
+          "alt": "Board"
+        },
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1681848776/o20qbaaucefof5yohsgp.jpg",
+          "alt": "Signin"
+        }
+      ]
+    },
+    {
+      "title": "Netfliy",
+      "description": "A clone of Netflix, using React and Styled-Components. The app is a pixel perfect clone of the Netflix Landing page, Login, Signup, and Browse pages.",
+      "links": [
+        {
+          "title": "App",
+          "href": "https://trello-back-4ft9.onrender.com/#/"
+        },
+        {
+          "title": "GitHub",
+          "href": "https://github.com/ordamari/trello-front"
+        }
+      ],
+      "images": [
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1681848442/qdbip4ug2dnhkznvmhoh.jpg",
+          "alt": "Landing"
+        },
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1615376871/gdaugtubodtekbuygrtj.jpg",
+          "alt": "Browse"
+        },
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1681848776/jzgg4zgxmhrkdegbvwq5.jpg",
+          "alt": "Signin"
+        }
+      ]
+    }
+  ]
+}

@@ -27,3 +27,27 @@ body {
         font-size: 1.5rem !important;
     }
 }
+
+.works {
+    .project {
+
+        img {
+            width: 100%;
+            margin-top: 64px;
+            aspect-ratio: 16/9;
+            object-fit: contain;
+            object-position: top;
+
+        }
+
+        .links {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+
+            a {
+                color: var(--secondary-color);
+            }
+        }
+    }
+}
