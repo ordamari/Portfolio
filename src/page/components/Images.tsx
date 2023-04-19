@@ -35,6 +35,8 @@ export function Images({ images }: PrivateProps) {
     };
   }, [selectedImageIndex]);
 
+  if (images.length === 0) return null;
+
   return (
     <img
       onClick={changeImage}

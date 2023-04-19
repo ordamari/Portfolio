@@ -30,15 +30,15 @@
     },
     {
       "title": "Netfliy",
-      "description": "A clone of Netflix, using React and Styled-Components. The app is a pixel perfect clone of the Netflix Landing page, Login, Signup, and Browse pages.",
+      "description": "I developed a clone of Netflix using React and Styled-Components. The application is a pixel-perfect replica of the Netflix landing page, login, signup, and browse pages. By utilizing React and Styled-Components, I was able to create a seamless user interface and a responsive design that accurately mimics the original Netflix platform. This project showcases my expertise in building complex web applications using modern front-end technologies and delivering high-quality, visually stunning user interfaces.",
       "links": [
         {
           "title": "App",
-          "href": "https://trello-back-4ft9.onrender.com/#/"
+          "href": "https://ordamari.github.io/netfliy/"
         },
         {
           "title": "GitHub",
-          "href": "https://github.com/ordamari/trello-front"
+          "href": "https://github.com/ordamari/netfliy"
         }
       ],
       "images": [
@@ -55,6 +55,45 @@
           "alt": "Signin"
         }
       ]
+    },
+    {
+      "title": "SmartSend",
+      "description": "I developed this project using React and TypeScript while working at 'Oversight' for a client. The project enables users to send messages, manage a bot, create campaigns, and manage distribution lists via WhatsApp. With this solution, users can efficiently communicate with their audience, streamline their marketing efforts, and easily manage their messaging campaigns. This project showcases my expertise in building custom software solutions using modern technologies such as React and TypeScript to meet the specific needs of clients and end-users alike.",
+      "links": [
+        {
+          "title": "Client website",
+          "href": "https://smartsend.co.il/"
+        }
+      ],
+      "images": [
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1681929756/jacy5xcyal9abbse9zwx.png",
+          "alt": "Messages"
+        },
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1681929756/ag5kvu5cid9sgcegb6ky.jpg",
+          "alt": "Add law to bot"
+        },
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1681929756/jlmon6oxotp56acqaow2.png",
+          "alt": "Distribution list"
+        },
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1681929756/lswpi8llodt09nwdwc0e.jpg",
+          "alt": "Create campaign"
+        }
+      ]
+    },
+    {
+      "title": "Buddies (on progress)",
+      "description": "I developed Buddies, a social media application designed to help me practice my skills with new technologies. The app is built with NestJS and GraphQL on the server-side and Next.js with TypeScript on the frontend. Buddies allows users to share posts and chat with their friends in a user-friendly interface. By leveraging the power of GraphQL and Next.js, I was able to create a seamless user experience that enables users to easily communicate with their friends. This project showcases my ability to learn and implement new technologies while delivering high-quality software solutions.",
+      "links": [
+        {
+          "title": "GitHub",
+          "href": "https://github.com/ordamari/Buddies"
+        }
+      ],
+      "images": []
     }
   ]
 }

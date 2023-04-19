@@ -1,0 +1,24 @@
+{
+  "socials": [
+    {
+      "icon": "linkedin",
+      "href": "https://www.linkedin.com/in/or-damari-8534561b3/"
+    },
+    {
+      "icon": "github",
+      "href": "https://github.com/ordamari"
+    },
+    {
+      "icon": "email",
+      "href": "mailto:ordamari971@gmail.com"
+    },
+    {
+      "icon": "whatsapp",
+      "href": "wa.me/972503990939?text=Hi%20Or"
+    },
+    {
+      "icon": "phone",
+      "href": "tel:+972503990939"
+    }
+  ]
+}

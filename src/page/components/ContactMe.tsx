@@ -1,31 +1,30 @@
 import { Section } from "./Section";
+import socialJson from "../../assets/json/socials.json";
+import { Icon, IconOptions } from "../../Experience/components/Icon";
 
 export function ContactMe() {
+  const socials = socialJson.socials;
+
   return (
     <Section side="left" sectionClass="contact">
       <Section.Intro number={2}>Contact Me</Section.Intro>
       <Section.Detail>
-        <h3 className="section-heading">Lorem ipsum</h3>
         <p className="section-text">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-          quaerat expedita porro nisi magni inventore voluptatibus tempora.
-          Vitae, modi dolore. Iusto, veritatis perferendis. Pariatur fugit
-          tempora non! Ducimus, quam commodi?
+          Thank you for visiting my portfolio! If you have any questions or
+          would like to get in touch with me, please feel free to do so using
+          any of the following methods:
         </p>
-        <h3 className="section-heading">Lorem ipsum</h3>
-        <p className="section-text">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-          quaerat expedita porro nisi magni inventore voluptatibus tempora.
-          Vitae, modi dolore. Iusto, veritatis perferendis. Pariatur fugit
-          tempora non! Ducimus, quam commodi?
-        </p>
-        <h3 className="section-heading">Lorem ipsum</h3>
-        <p className="section-text">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veritatis
-          quaerat expedita porro nisi magni inventore voluptatibus tempora.
-          Vitae, modi dolore. Iusto, veritatis perferendis. Pariatur fugit
-          tempora non! Ducimus, quam commodi?
-        </p>
+        <div className="socials">
+          {socials.map((social) => {
+            return (
+              <li key={social.href}>
+                <a href={social.href} target="_blank" rel="noreferrer">
+                  <Icon icon={social.icon as IconOptions} />
+                </a>
+              </li>
+            );
+          })}
+        </div>
       </Section.Detail>
     </Section>
   );
