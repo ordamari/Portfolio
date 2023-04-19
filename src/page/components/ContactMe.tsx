@@ -14,7 +14,8 @@ export function ContactMe() {
           would like to get in touch with me, please feel free to do so using
           any of the following methods:
         </p>
-        <div className="socials">
+
+        <ul className="socials">
           {socials.map((social) => {
             return (
               <li key={social.href}>
@@ -24,7 +25,11 @@ export function ContactMe() {
               </li>
             );
           })}
-        </div>
+        </ul>
+
+        <p className="section-text">
+          Or you can download my resume by clicking the button below:
+        </p>
       </Section.Detail>
     </Section>
   );
