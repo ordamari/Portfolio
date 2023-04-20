@@ -20,9 +20,7 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        uses: |
-          npm config set '//npm.fontawesome.com/:_authToken' "${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}"
-          bahmutov/npm-install@v1
+        uses: bahmutov/npm-install@v1
 
       - name: Build project
         run: npm run build
