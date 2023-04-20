@@ -23,8 +23,10 @@ body {
 }
 
 .about,
-.contact {
-    .section-text {
+.contact {}
+
+.section-text {
+    @media (min-width: 768px) {
         font-size: 1.5rem !important;
     }
 }
@@ -75,6 +77,7 @@ body {
         align-items: center;
         justify-content: center;
         gap: 16px;
+        flex-wrap: wrap;
 
         li {
             display: inline-block;
@@ -118,6 +121,69 @@ body {
                 -webkit-text-fill-color: transparent;
                 transition: all $timing ease-in;
             }
+        }
+    }
+
+    .buttons-cv {
+        padding: 0;
+        list-style: none;
+        margin-block: 3em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        width: 100%;
+        flex-wrap: wrap;
+
+
+
+        li {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        a {
+            display: inline-block;
+            width: 100%;
+            border-radius: 0.5em;
+            background-color: $accent;
+            border: 2px solid $accent;
+            font-weight: var(--bold);
+            color: #fff;
+            text-decoration: none;
+            transition: all $timing ease-out;
+            display: flex;
+            padding: 1em;
+
+            svg {
+                position: relative;
+                transition: all $timing ease-out;
+                left: 0%;
+            }
+
+            span {
+                width: 100%;
+                text-align: center;
+                position: relative;
+                left: 0;
+                transition: all $timing ease-out;
+
+            }
+
+            &:hover {
+                background: linear-gradient(45deg, $gradient, $gradient);
+                color: $iconColor;
+
+                svg {
+                    left: calc(100% - 1em);
+                }
+
+                span {
+                    left: -1em;
+                }
+
+            }
+
         }
     }
 }

@@ -3,14 +3,21 @@ import {
   faLinkedin,
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope, faFile, faPhone } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faFile,
+  faFilePdf,
+  faFileWord,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export type IconOptions =
   | "linkedin"
   | "email"
   | "whatsapp"
   | "phone"
-  | "resume"
+  | "word"
+  | "pdf"
   | "github";
 
 type PrivateProps = {
@@ -27,8 +34,10 @@ export function Icon({ icon }: PrivateProps) {
       return <FontAwesomeIcon icon={faWhatsapp} />;
     case "phone":
       return <FontAwesomeIcon icon={faPhone} />;
-    case "resume":
-      return <FontAwesomeIcon icon={faFile} />;
+    case "word":
+      return <FontAwesomeIcon icon={faFileWord} />;
+    case "pdf":
+      return <FontAwesomeIcon icon={faFilePdf} />;
     case "github":
       return <FontAwesomeIcon icon={faGithub} />;
     default:

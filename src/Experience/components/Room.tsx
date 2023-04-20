@@ -103,6 +103,14 @@ export function Room({
     return material;
   }, []);
 
+  const pictureMaterial = useMemo(() => {
+    const material = new THREE.MeshStandardMaterial({
+      map: new THREE.TextureLoader().load("./textures/picture.jpg"),
+      side: THREE.DoubleSide,
+    });
+    return material;
+  }, []);
+
   const televisionMaterial = useMemo(() => {
     const texture = new THREE.VideoTexture(televisionVideoElement);
     const material = new THREE.MeshStandardMaterial({
@@ -1093,7 +1101,7 @@ export function Room({
           castShadow
           receiveShadow
           geometry={nodes.pictureImage.geometry}
-          material={materials.picture}
+          material={pictureMaterial}
           position={[-3.7, 14.29, -9.04]}
           // scale={[4.36, 2.19, 0.2]}
           scale={0}
