@@ -5,11 +5,20 @@
       "description": "I developed Buddies, a social media application designed to help me practice my skills with new technologies. The app is built with NestJS and GraphQL on the server-side and Next.js with TypeScript on the frontend. Buddies allows users to share posts and chat with their friends in a user-friendly interface. By leveraging the power of GraphQL and Next.js, I was able to create a seamless user experience that enables users to easily communicate with their friends. This project showcases my ability to learn and implement new technologies while delivering high-quality software solutions.",
       "links": [
         {
+          "title": "App",
+          "href": "https://buddies-frontend-o3z16c1nb-ordamari.vercel.app"
+        },
+        {
           "title": "GitHub",
           "href": "https://github.com/ordamari/Buddies"
         }
       ],
-      "images": []
+      "images": [
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1686037350/eqpyhydsg9iwpegma0rk.jpg",
+          "alt": "Buddies"
+        }
+      ]
     },
     {
       "title": "SmartSend",
