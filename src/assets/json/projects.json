@@ -49,6 +49,26 @@
       ]
     },
     {
+      "title": "Chess 3D",
+      "description": "I developed a 3D chess game using React and Three.js. The game features a fully functional chess board with pieces that can be moved by the user. The game also features a 3D camera that can be rotated around the board, allowing users to view the board from any angle. This project showcases my expertise in building complex web applications using modern front-end technologies and delivering high-quality, visually stunning user interfaces.",
+      "links": [
+        {
+          "title": "App",
+          "href": "https://3d-chess-tau.vercel.app"
+        },
+        {
+          "title": "GitHub",
+          "href": "https://github.com/ordamari/3d-chess"
+        }
+      ],
+      "images": [
+        {
+          "src": "https://res.cloudinary.com/dif8yy3on/image/upload/v1705150857/xi6szd0sljaor1jnvwou.png",
+          "alt": "Chess game"
+        }
+      ]
+    },
+    {
       "title": "Trello Clone App",
       "description": "A clone of the popular project management app Trello, using React and SASS. The app allows users to create boards, add lists, and create cards with tasks that can be assigned to team members. The app also features drag-and-drop functionality, allowing users to easily move cards between lists and boards.",
       "links": [
